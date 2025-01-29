@@ -1,6 +1,42 @@
+import axios from "axios";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, redirect } from "react-router-dom";
+import { removeUser } from "../redux/userSlice";
+
 const Navbar = () => {
+  const user = useSelector((store) => store.user);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const handleLogOut = async () => {
+    try {
+      if (!user) {
+        throw new Error("Not Login 1");
+      }
+
+      const res = await axios.post(
+        "http://localhost:3000/logout",
+        {
+          redirect: "follow",
+        },
+        { withCredentials: true }
+      );
+
+      console.log(res);
+      if (res.statusText) {
+        dispatch(removeUser());
+        console.log("remove");
+        return;
+      }
+    } catch (error) {
+      console.log("Error : " + error.message);
+    }
+  };
+
   return (
-    <div className="navbar rounded-xl   bg-base-300">
+    <div className="navbar rounded-xl relative   bg-base-300">
       <div className="navbar-start ">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
@@ -24,13 +60,10 @@ const Navbar = () => {
             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
           >
             <li>
-              <a>Homepage</a>
+              <Link to={"/profile"}>Profile</Link>
             </li>
             <li>
-              <a>Portfolio</a>
-            </li>
-            <li>
-              <a>About</a>
+              <Link to={"/feed"}>Feed</Link>
             </li>
           </ul>
         </div>
@@ -39,22 +72,6 @@ const Navbar = () => {
         <a className="btn btn-ghost text-xl">D-Match</a>
       </div>
       <div className="navbar-end">
-        <button className="btn btn-ghost btn-circle">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-            />
-          </svg>
-        </button>
         <button className="btn btn-ghost btn-circle">
           <div className="indicator">
             <svg
@@ -74,6 +91,30 @@ const Navbar = () => {
             <span className="badge badge-xs badge-primary indicator-item"></span>
           </div>
         </button>
+        {user ? (
+          <button
+            onClick={() => setIsOpen((isOpen) => !isOpen)}
+            className="cursor-pointer mx-2.5 "
+          >
+            <img
+              alt="User Photo"
+              className="h-8 w-8 mx-2 rounded-full"
+              src={user.photoURL}
+            ></img>
+            {isOpen && (
+              <button
+                onClick={handleLogOut}
+                className="btn btn-error rounded-2xl my-2 z-50 absolute right-0"
+              >
+                Log Out
+              </button>
+            )}
+          </button>
+        ) : (
+          <button className="btn btn-active btn-sm mx-2.5 btn-link">
+            <Link to={"/signUp"}>Sign Up</Link>
+          </button>
+        )}
       </div>
     </div>
   );
