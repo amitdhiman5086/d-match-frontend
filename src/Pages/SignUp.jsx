@@ -80,19 +80,19 @@ function SignUp() {
   const handleOnChangeSkills = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    console.log(name + value);
+    // console.log(name + value);
 
     const skills = value.split(",").map((item) => item.trim());
 
     setSignUpObj((values) => ({ ...values, [name]: skills }));
   };
 
-  console.log(signUpObj);
+  // console.log(signUpObj);
 
   useEffect(() => {
     if (user) {
       navigate("/profile");
-      console.log(user);
+      // console.log(user);
     }
   }, [user, navigate]);
 
@@ -241,6 +241,7 @@ function SignUp() {
               )}
               <button
                 type="submit"
+                disabled={loading}
                 className={
                   "btn mt-2 w-full btn-primary" + (loading ? " loading" : "")
                 }

@@ -1,12 +1,13 @@
 import axios from "axios";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, redirect } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { removeUser } from "../redux/userSlice";
 
 const Navbar = () => {
   const user = useSelector((store) => store.user);
   const [isOpen, setIsOpen] = useState(false);
+  const navigator = useNavigate();
 
   const dispatch = useDispatch();
 
@@ -24,11 +25,11 @@ const Navbar = () => {
         { withCredentials: true }
       );
 
-      console.log(res);
+      // console.log(res);
       if (res.statusText) {
         dispatch(removeUser());
-        console.log("remove");
-        return;
+        // console.log("remove");
+        return navigator("/login");
       }
     } catch (error) {
       console.log("Error : " + error.message);

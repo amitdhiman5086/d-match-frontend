@@ -69,7 +69,7 @@ function Login() {
     const value = e.target.value;
     setLoginObj((values) => ({ ...values, [name]: value }));
   };
-  console.log(loginObj);
+  // console.log(loginObj);
 
   useEffect(() => {
     if (user) {
