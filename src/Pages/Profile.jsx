@@ -30,14 +30,16 @@ const Profile = () => {
       e.preventDefault();
       setIsLoading(true);
       setError("");
-      if (!deepEqual(profileData, profileForm)) {
-        setIsLoading(false);
-        setError("Nothing Change");
-        setTimeout(() => {
-          setIsToste(false);
-        }, 5000);
-        return;
-      }
+
+      //Not Worked
+      // if (deepEqual(profileData, profileForm)) {
+      //   setIsLoading(false);
+      //   setError("Nothing Change");
+      //   setTimeout(() => {
+      //     setIsToste(false);
+      //   }, 5000);
+      //   return;
+      // }
 
       const response = await axios.post(
         BASE_URL + "/profile/edit",
