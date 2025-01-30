@@ -59,7 +59,7 @@ function AppLayout() {
     <div className="max-w-5xl mx-auto">
       <Navbar />
 
-      <div className="min-h-[70vh] place-content-center md:min-h-[70vh]">
+      <div className="min-h-[70vh] mx-auto w-full  items-center place-content-center md:min-h-[70vh]">
         <Outlet />
       </div>
 

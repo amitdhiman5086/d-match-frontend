@@ -61,9 +61,7 @@ const Card = ({ feed }) => {
   return (
     <div className="flex justify-center items-center overflow-hidden w-full ">
       <div>
-        <h1 className="text-center text-2xl font-bold mb-4">
-          React Tinder Card
-        </h1>
+
         <div className="relative w-[90vw] max-w-[260px] h-[300px]">
           {characters.map((character, index) => (
             <TinderCard

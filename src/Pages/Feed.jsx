@@ -16,8 +16,7 @@ const Feed = () => {
 
       if (res.data.feedConnection) {
         dispatch(addFeed(res.data.feedConnection));
-        console.log(res.data.feedConnection)
-
+        console.log(res.data.feedConnection);
       }
     } catch (error) {
       console.log(error);
@@ -25,16 +24,23 @@ const Feed = () => {
   };
 
   useEffect(() => {
-    if (!feed) {
+    if (!(feed && feed.length)) {
       fetchFeeed();
     }
-    
-
   }, []);
 
-  return (!feed) ?null : <div className="overflow-hidden">
-    <Card feed={feed}/>
-  </div>;
+  return !(feed && feed.length) ? (
+    <div className="w-full">
+      {" "}
+      <div className="skeleton mx-auto w-[90vw] max-w-[260px] h-[300px] text-center  flex justify-center font-bold items-center">
+        There is Nothing to Catch Up !!
+      </div>
+    </div>
+  ) : (
+    <div className="overflow-hidden">
+      <Card feed={feed} />
+    </div>
+  );
 };
 
 export default Feed;
