@@ -1,10 +1,10 @@
 import axios from "axios";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import { addUser, removeUser } from "../redux/userSlice";
 import { BASE_URL } from "../Utils/constant";
 import TinderCard from "react-tinder-card";
+import { deepEqual } from "../Utils/helper";
 
 const Profile = () => {
   const profileData = useSelector((store) => store.user);
@@ -22,6 +22,7 @@ const Profile = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [profileForm, setProfileForm] = useState(INITIAL_PROFILE_DATA);
+  const [isToast, setIsToste] = useState(false);
   const dispatch = useDispatch();
 
   const handleProfileUpdate = async (e) => {
@@ -29,6 +30,14 @@ const Profile = () => {
       e.preventDefault();
       setIsLoading(true);
       setError("");
+      if (!deepEqual(profileData, profileForm)) {
+        setIsLoading(false);
+        setError("Nothing Change");
+        setTimeout(() => {
+          setIsToste(false);
+        }, 5000);
+        return;
+      }
 
       const response = await axios.post(
         BASE_URL + "/profile/edit",
@@ -39,10 +48,15 @@ const Profile = () => {
       );
 
       if (response.data.data) {
+        setIsToste(true);
+
         dispatch(removeUser());
         dispatch(addUser(response.data.data));
       }
       setIsLoading(false);
+      setTimeout(() => {
+        setIsToste(false);
+      }, 5000);
     } catch (err) {
       setTimeout(() => setError(""), 5000);
       setIsLoading(false);
@@ -139,9 +153,7 @@ const Profile = () => {
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className={`btn mt-2 w-full btn-primary${
-                      isLoading ? " loading" : ""
-                    }`}
+                    className={`btn mt-2 w-full btn-primary`}
                   >
                     Update Profile
                   </button>
@@ -169,6 +181,16 @@ const Profile = () => {
           </div>
         </TinderCard>
       </div>
+
+      {isToast && (
+        <div className="toast toast-top toast-center">
+          <div className="alert alert-success">
+            <span>
+              {profileData.firstName} your profile updated successfully.
+            </span>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
