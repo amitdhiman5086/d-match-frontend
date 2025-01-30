@@ -16,6 +16,8 @@ const Feed = () => {
 
       if (res.data.feedConnection) {
         dispatch(addFeed(res.data.feedConnection));
+        console.log(res.data.feedConnection)
+
       }
     } catch (error) {
       console.log(error);
@@ -26,10 +28,12 @@ const Feed = () => {
     if (!feed) {
       fetchFeeed();
     }
+    
+
   }, []);
 
-  return <div>
-    <Card/>
+  return (!feed) ?null : <div className="overflow-hidden">
+    <Card feed={feed}/>
   </div>;
 };
 
