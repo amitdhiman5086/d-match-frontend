@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { addUser, removeUser } from "../redux/userSlice";
 import { BASE_URL } from "../Utils/constant";
 import TinderCard from "react-tinder-card";
-import { deepEqual } from "../Utils/helper";
 
 const Profile = () => {
   const profileData = useSelector((store) => store.user);
@@ -79,12 +78,12 @@ const Profile = () => {
   };
 
   return (
-    <div className="flex w-full mx-auto bg-base-200 justify-center items-center">
-      <div className="w-2/3">
+    <div className="flex flex-col  md:flex-row w-full mx-auto bg-base-200 justify-center items-center">
+      <div className="w-full md:w-2/3">
         <div className="flex items-center">
           <div className="card mx-auto w-full max-w-5xl">
             <div className="justify-center items-center bg-base-200 rounded-xl">
-              <div className="py-24 max-w-xl mx-auto px-10">
+              <div className="py-10 md:py-24 max-w-xl mx-auto px-10">
                 <h2 className="text-2xl font-semibold mb-3 text-center">
                   Update Profile
                 </h2>
@@ -166,7 +165,7 @@ const Profile = () => {
         </div>
       </div>
 
-      <div className="w-1/3">
+      <div className="md:w-1/3 pb-5 md:pb-0">
         <TinderCard>
           <div
             style={{ backgroundImage: `url(${profileForm.photoURL})` }}
