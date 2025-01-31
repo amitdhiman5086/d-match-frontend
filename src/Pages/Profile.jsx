@@ -184,7 +184,7 @@ const Profile = () => {
       </div>
 
       {isToast && (
-        <div className="toast toast-top toast-center">
+        <div className="toast max-w-2xs w-full mx-auto top-10 toast-top toast-center">
           <div className="alert alert-success">
             <span>
               {profileData.firstName} your profile updated successfully.

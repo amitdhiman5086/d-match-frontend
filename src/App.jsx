@@ -12,6 +12,7 @@ import { BASE_URL } from "./Utils/constant";
 import { addUser } from "./redux/userSlice";
 import { useEffect } from "react";
 import ProtectedFeed from "./Pages/ProtectedFeed";
+import ProtectedRequest from "./Pages/ProtectedRequest";
 
 const App = () => {
   return (
@@ -23,6 +24,8 @@ const App = () => {
             <Route path="/signUp" element={<SignUp />} />
             <Route path="/profile" element={<ProtectedProfile />} />
             <Route path="/feed" element={<ProtectedFeed />} />
+            <Route path="/requests" element={<ProtectedRequest />} />
+        
           </Route>
         </Routes>
       </BrowserRouter>
@@ -59,7 +62,7 @@ function AppLayout() {
     <div className="max-w-5xl mx-auto">
       <Navbar />
 
-      <div className="min-h-[70vh] mx-auto w-full  items-center place-content-center md:min-h-[70vh]">
+      <div className="min-h-[70vh] mx-auto w-full  items-center place-content-start md:min-h-[50vh]">
         <Outlet />
       </div>
 

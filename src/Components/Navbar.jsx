@@ -3,7 +3,8 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { removeUser } from "../redux/userSlice";
-import {BASE_URL} from "../Utils/constant"
+import { BASE_URL } from "../Utils/constant";
+import { ImFeed } from "react-icons/im";
 
 const Navbar = () => {
   const user = useSelector((store) => store.user);
@@ -19,8 +20,7 @@ const Navbar = () => {
       }
 
       const res = await axios.post(
-        
-        BASE_URL+"/logout",
+        BASE_URL + "/logout",
         {
           redirect: "follow",
         },
@@ -41,41 +41,17 @@ const Navbar = () => {
   return (
     <div className="navbar rounded-xl relative   bg-base-300">
       <div className="navbar-start ">
-        <div className="dropdown">
+        <Link to={"/feed"} className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M4 6h16M4 12h16M4 18h7"
-              />
-            </svg>
+            <ImFeed className="text-yellow-400" size="25" />
           </div>
-          <ul
-            tabIndex={0}
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
-          >
-            <li>
-              <Link to={"/profile"}>Profile</Link>
-            </li>
-            <li>
-              <Link to={"/feed"}>Feed</Link>
-            </li>
-          </ul>
-        </div>
+        </Link>
       </div>
       <div className="navbar-center">
         <a className="btn btn-ghost text-xl">D-Match</a>
       </div>
       <div className="navbar-end">
-        <button className="btn btn-ghost btn-circle">
+        <Link to={"/requests"} className="btn btn-ghost btn-circle">
           <div className="indicator">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -93,15 +69,21 @@ const Navbar = () => {
             </svg>
             <span className="badge badge-xs badge-primary indicator-item"></span>
           </div>
-        </button>
+        </Link>
         {user ? (
-          <button
-            onClick={() => setIsOpen((isOpen) => !isOpen)}
+          <Link
+            to={"/profile"}
+            onClick={() => {
+              setTimeout(() => {
+                setIsOpen(false);
+              }, 2000);
+              setIsOpen((isOpen) => !isOpen);
+            }}
             className="cursor-pointer mx-2.5 "
           >
             <img
               alt="User Photo"
-              className="h-8 w-8 mx-2 rounded-full"
+              className="h-8 w-8 mx-2 object-cover rounded-full"
               src={user.photoURL}
             ></img>
             {isOpen && (
@@ -112,7 +94,7 @@ const Navbar = () => {
                 Log Out
               </button>
             )}
-          </button>
+          </Link>
         ) : (
           <button className="btn btn-active btn-sm mx-2.5 btn-link">
             <Link to={"/signUp"}>Sign Up</Link>

@@ -15,14 +15,14 @@ const Card = ({ feed }) => {
   const [userId, setUserId] = useState("");
 
   const swiped = (direction, nameToDelete, userId) => {
-    console.log("removing: " + nameToDelete);
+    // console.log("removing: " + nameToDelete);
     setLastDirection(direction);
     setUserId(userId);
-    console.log(userId);
+    // console.log(userId);
   };
 
   const outOfFrame = (name) => {
-    console.log(name + " left the screen!");
+    // console.log(name + " left the screen!");
   };
 
   const ignoreProfile = async () => {
@@ -32,7 +32,7 @@ const Card = ({ feed }) => {
         {},
         { withCredentials: true }
       );
-      console.log(res);
+      // console.log(res);
     } catch (error) {
       console.log("Error : " + error.message);
     }
@@ -44,7 +44,7 @@ const Card = ({ feed }) => {
         {},
         { withCredentials: true }
       );
-      console.log(res);
+      // console.log(res);
     } catch (error) {
       console.log("Error : " + error.message);
     }
@@ -59,7 +59,7 @@ const Card = ({ feed }) => {
   }, [userId , lastDirection]);
 
   return (
-    <div className="flex justify-center items-center overflow-hidden w-full ">
+    <div className="flex  z-50 justify-center items-center overflow-hidden w-full ">
       <div>
 
         <div className="relative w-[90vw] max-w-[260px] h-[300px]">

@@ -51,7 +51,9 @@ function SignUp() {
         return setErrorMessage("Password is required!");
       }
 
-      const result = await axios.post(BASE_URL + "/signup", signUpObj);
+      const result = await axios.post(BASE_URL + "/signup", signUpObj, {
+        withCredentials: true,
+      });
 
       dispatch(addUser(result.data.data));
       setLoading(false);
