@@ -9,12 +9,15 @@ const requestSlice = createSlice({
   reducers: {
     addRequests: (state, action) => {
       state.requests = action.payload;
-      return
+      return;
     },
-    
+    addConnection: (state, action) => {
+      state.connections = action.payload;
+      return;
+    },
   },
 });
 
-export const { addRequests, removeAllRequest } = requestSlice.actions;
+export const { addRequests, addConnection } = requestSlice.actions;
 
 export default requestSlice.reducer;

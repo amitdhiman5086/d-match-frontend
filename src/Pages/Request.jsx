@@ -2,13 +2,14 @@ import axios from "axios";
 import { BASE_URL } from "../Utils/constant";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addRequests } from "../redux/requestSlice";
+import { addConnection, addRequests } from "../redux/requestSlice";
 import { FaUserFriends } from "react-icons/fa";
 
 const Request = () => {
   const requestSlice = useSelector((store) => store.request);
   const dispatch = useDispatch();
   const [isReload, setIsReload] = useState(false);
+  const [isConnection, setIsConnection] = useState(false);
   // console.log(requests);
 
   const fetchRequest = async () => {
@@ -29,48 +30,129 @@ const Request = () => {
       console.log(error);
     }
   };
+
+  const fetchConnection = async () => {
+    try {
+      const res = await axios.get(
+        BASE_URL + "/user/connections",
+
+        {
+          withCredentials: true,
+        }
+      );
+      // console.log(res.data.data);
+
+      if (res.data) {
+        dispatch(addConnection(res.data.data));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    fetchRequest();
-  }, [isReload]);
+    if (!isConnection) {
+      fetchRequest();
+    } else {
+      fetchConnection();
+    }
+  }, [isReload, isConnection]);
 
   const request = requestSlice.requests;
-  // console.log(request);
+  const connection = requestSlice.connections;
+  // console.log(connection);
 
   return (
     <div className="flex flex-col w-full    ">
       <div>
-        <div className="navbar justify-between px-6 bg-base-200 text-neutral-content">
+        <div className="navbar justify-between md:px-6 bg-base-200 text-neutral-content">
           <p className=" font-bold ">Your Friend Rquests </p>
-          <button
-            onClick={() => setIsReload((isReload) => !isReload)}
-            className="btn btn-success text-xl"
-          >
-            Reload
-          </button>
+          <div className="space-x-3">
+            <button
+              onClick={() => setIsConnection((isConnection) => !isConnection)}
+              className="btn btn-info text-sm"
+            >
+              {isConnection ? "Connections" : "Request"}
+            </button>
+            <button
+              onClick={() => setIsReload((isReload) => !isReload)}
+              className="btn btn-success text-sm"
+            >
+              Reload
+            </button>
+          </div>{" "}
         </div>
       </div>
-      {request.length == 0 ? (
-        <div className="flex justify-center items-center h-64">
-          <div className="card bg-base-100  p-6 text-center ">
-            <div className="flex flex-col items-center">
-              <FaUserFriends className="text-6xl text-gray-400 mb-4 animate-bounce" />
-              <h2 className="text-xl font-semibold text-gray-700">
-                No Friend Requests Left
-              </h2>
-              <p className="text-gray-500 mt-2">
-                You&apos;re all caught up! Check back later.
-              </p>
+      {isConnection ? (
+        <div>
+          {connection.length == 0 ? (
+            <div className="flex justify-center items-center h-64">
+              <div className="card bg-base-100  p-6 text-center ">
+                <div className="flex flex-col items-center">
+                  <FaUserFriends className="text-6xl text-gray-400 mb-4 animate-bounce" />
+                  <h2 className="text-xl font-semibold text-gray-700">
+                    No Connection
+                  </h2>
+                  <p className="text-gray-500 mt-2">
+                    You&apos;re all caught up! Check back later.
+                  </p>
+                </div>
+              </div>
             </div>
-          </div>
+          ) : (
+            <div>
+              {connection.map((req) => (
+                <div className="my-4" key={req._id}>
+                  <div className="card card-side bg-base-100 max-w-3xl mx-auto shadow-xl">
+                    <figure>
+                      <img
+                        src={req?.photoURL}
+                        alt="User"
+                        className="w-30 h-28 rounded-r-xl "
+                      />
+                    </figure>
+                    <div className="card-body px-2  flex flex-row justify-between items-center   ">
+                      <div className="space-y-1">
+                        <h2 className="card-title line-clamp-1 mb-2">
+                          {req?.firstName + " " + req?.lastName}
+                        </h2>
+                        <p className="font-semibold">{"Age :" + req?.age + "   Gender : " + req?.gender}</p>
+                        <p className="line-clamp-1 font-extralight">{req?.about}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       ) : (
-        <div>
-          {request.map((req) => (
-            <div className="my-4" key={req._id}>
-              <SingleRequest req={req} />
+        <>
+          {" "}
+          {request.length == 0 ? (
+            <div className="flex justify-center items-center h-64">
+              <div className="card bg-base-100  p-6 text-center ">
+                <div className="flex flex-col items-center">
+                  <FaUserFriends className="text-6xl text-gray-400 mb-4 animate-bounce" />
+                  <h2 className="text-xl font-semibold text-gray-700">
+                    No Friend Requests Left
+                  </h2>
+                  <p className="text-gray-500 mt-2">
+                    You&apos;re all caught up! Check back later.
+                  </p>
+                </div>
+              </div>
             </div>
-          ))}
-        </div>
+          ) : (
+            <div>
+              {request.map((req) => (
+                <div className="my-4" key={req._id}>
+                  <SingleRequest req={req} />
+                </div>
+              ))}
+            </div>
+          )}
+        </>
       )}
     </div>
   );
@@ -114,13 +196,12 @@ const SingleRequest = (req) => {
         />
       </figure>
       <div className="card-body px-2  flex flex-row justify-between items-center   ">
-        <div>
-          <h2 className="card-title line-clamp-1 ">
+        <div className="space-y-1">
+          <h2 className="card-title mb-2 line-clamp-1 ">
             {user?.firstName + " " + user?.lastName}
           </h2>
-          <p className="line-clamp-1">
-            Click the button to watch on Jetflix app.
-          </p>
+          <p className="font-semibold">{"Age :" + user?.age + "   Gender : " + user?.gender}</p>
+          <p className="line-clamp-1 font-extralight">{user?.about}</p>
         </div>
         {isShow && (
           <div className=" m-0 p-0 flex gap-1 md:gap-4 ">
