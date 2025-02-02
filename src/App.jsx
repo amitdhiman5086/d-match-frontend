@@ -6,7 +6,7 @@ import { Provider, useDispatch, useSelector } from "react-redux";
 import appStore from "./redux/appStore";
 import SignUp from "./Pages/SignUp";
 import ProtectedProfile from "./Pages/ProtectedProfile";
-import Navbar from "./components/Navbar";
+import Navbar from "./Components/Navbar";
 import axios from "axios";
 import { BASE_URL } from "./Utils/constant";
 import { addUser } from "./redux/userSlice";
