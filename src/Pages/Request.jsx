@@ -72,7 +72,7 @@ const Request = () => {
               onClick={() => setIsConnection((isConnection) => !isConnection)}
               className="btn btn-info text-sm"
             >
-              {isConnection ? "Connections" : "Request"}
+              {isConnection ? "Request" : "Connections"}
             </button>
             <button
               onClick={() => setIsReload((isReload) => !isReload)}
@@ -116,8 +116,12 @@ const Request = () => {
                         <h2 className="card-title line-clamp-1 mb-2">
                           {req?.firstName + " " + req?.lastName}
                         </h2>
-                        <p className="font-semibold">{"Age :" + req?.age + "   Gender : " + req?.gender}</p>
-                        <p className="line-clamp-1 font-extralight">{req?.about}</p>
+                        <p className="font-semibold">
+                          {"Age :" + req?.age + "   Gender : " + req?.gender}
+                        </p>
+                        <p className="line-clamp-1 font-extralight">
+                          {req?.about}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -200,7 +204,9 @@ const SingleRequest = (req) => {
           <h2 className="card-title mb-2 line-clamp-1 ">
             {user?.firstName + " " + user?.lastName}
           </h2>
-          <p className="font-semibold">{"Age :" + user?.age + "   Gender : " + user?.gender}</p>
+          <p className="font-semibold">
+            {"Age :" + user?.age + "   Gender : " + user?.gender}
+          </p>
           <p className="line-clamp-1 font-extralight">{user?.about}</p>
         </div>
         {isShow && (
