@@ -13,6 +13,7 @@ import { addUser } from "./redux/userSlice";
 import { useEffect } from "react";
 import ProtectedFeed from "./Pages/ProtectedFeed";
 import ProtectedRequest from "./Pages/ProtectedRequest";
+import NotFound from "./Pages/NotFound";
 
 const App = () => {
   return (
@@ -25,6 +26,8 @@ const App = () => {
             <Route path="/profile" element={<ProtectedProfile />} />
             <Route path="/feed" element={<ProtectedFeed />} />
             <Route path="/requests" element={<ProtectedRequest />} />
+            <Route path="*" element={<NotFound />} />
+
         
           </Route>
         </Routes>
