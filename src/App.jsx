@@ -1,44 +1,22 @@
-import { Outlet, useNavigate } from "react-router-dom";
-import Footer from "./Components/Footer";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./Pages/Login";
-import { Provider, useDispatch, useSelector } from "react-redux";
-import appStore from "./redux/appStore";
+import { useDispatch, useSelector } from "react-redux";
 import SignUp from "./Pages/SignUp";
-import ProtectedProfile from "./Pages/ProtectedProfile";
-import Navbar from "./Components/Navbar";
 import axios from "axios";
 import { BASE_URL } from "./Utils/constant";
 import { addUser } from "./redux/userSlice";
 import { useEffect } from "react";
-import ProtectedFeed from "./Pages/ProtectedFeed";
-import ProtectedRequest from "./Pages/ProtectedRequest";
+
 import NotFound from "./Pages/NotFound";
+import Chat from "./Pages/Chat";
+import ProtectedRoute from "./Pages/ProtectedRoute";
+import Profile from "./Pages/Profile";
+import Feed from "./Pages/Feed";
+import Request from "./Pages/Request";
+import AppLayout from "./Pages/AppLayout";
 
 const App = () => {
-  return (
-    <Provider store={appStore}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<AppLayout />}>
-            <Route path="/login" element={<Login />} />
-            <Route path="/signUp" element={<SignUp />} />
-            <Route path="/profile" element={<ProtectedProfile />} />
-            <Route path="/feed" element={<ProtectedFeed />} />
-            <Route path="/requests" element={<ProtectedRequest />} />
-            <Route path="*" element={<NotFound />} />
-
-        
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </Provider>
-  );
-};
-
-function AppLayout() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const user = useSelector((store) => store.user);
 
   const fetchUser = async () => {
@@ -46,11 +24,9 @@ function AppLayout() {
       const res = await axios.get(BASE_URL + "/profile/view", {
         withCredentials: true,
       });
-      // console.log(res);
 
       dispatch(addUser(res.data.data));
     } catch (error) {
-      navigate("/login");
       console.log("Error : " + error.message);
     }
   };
@@ -62,16 +38,25 @@ function AppLayout() {
   }, []);
 
   return (
-    <div className="max-w-5xl mx-auto">
-      <Navbar />
+    <BrowserRouter basename="/">
+      <Routes>
+        <Route path="/" element={<AppLayout />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signUp" element={<SignUp />} />
 
-      <div className="min-h-[70vh] mx-auto w-full  items-center place-content-start md:min-h-[50vh]">
-        <Outlet />
-      </div>
+          <Route element={<ProtectedRoute />}>
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/feed" element={<Feed />} />
+            <Route path="/requests" element={<Request />} />
 
-      <Footer />
-    </div>
+            <Route path="/chat/:toUserId" element={<Chat />} />
+          </Route>
+
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;

@@ -19,8 +19,6 @@ function Login() {
 
   const navigate = useNavigate();
 
- 
-
   const submitForm = async (e) => {
     try {
       e.preventDefault();
@@ -128,7 +126,10 @@ function Login() {
                     onChange={handleOnChange}
                   />
                   {loginObj.password && (
-                    <button className="btn rounded-full btn-sm cursor-pointer" onClick={() => setVisible((isVisible) => !isVisible)}>
+                    <button
+                      className="btn rounded-full btn-sm cursor-pointer"
+                      onClick={() => setVisible((isVisible) => !isVisible)}
+                    >
                       {isVisible ? "Hide" : "Show"}
                     </button>
                   )}

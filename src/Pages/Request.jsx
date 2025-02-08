@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addConnection, addRequests } from "../redux/requestSlice";
 import { FaUserFriends } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Request = () => {
   const requestSlice = useSelector((store) => store.request);
@@ -103,7 +104,7 @@ const Request = () => {
             <div>
               {connection.map((req) => (
                 <div className="my-4" key={req._id}>
-                  <div className="card card-side bg-base-100 max-w-3xl mx-auto shadow-xl">
+                  <div className="card card-side bg-base-100 justify-center items-center max-w-3xl mx-auto shadow-xl">
                     <figure>
                       <img
                         src={req?.photoURL}
@@ -124,6 +125,7 @@ const Request = () => {
                         </p>
                       </div>
                     </div>
+                    <Link to={"/chat/"+req._id} className="btn btn-outline "> Chat </Link>
                   </div>
                 </div>
               ))}
